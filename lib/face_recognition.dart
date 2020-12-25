@@ -1,11 +1,14 @@
 /*
 Performs face detection,recognition and results the recognised face
 in the audio format
+LongPress for saving a new face
+Double tap for changing the camera
  */
 
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:Face_recognition/save_face.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
 import 'package:firebase_ml_vision/firebase_ml_vision.dart';
@@ -297,11 +300,11 @@ class _FaceRecognitionState extends State<FaceRecognition> {
     _initializeCamera();
   }
 
-  // @override
-  // void dispose() {
-  //   if (speech.isListening) stopListening();
-  //   super.dispose();
-  // }
+  @override
+  void dispose() {
+    stopListening();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -330,7 +333,25 @@ class _FaceRecognitionState extends State<FaceRecognition> {
           ),
         ],
       ),
-      body: _buildImage(),
+      body: GestureDetector(
+        child: _buildImage(),
+        onLongPress: () {
+          if (_faceFound) {
+            setState(() {
+              _camera = null;
+            });
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                  builder: (context) =>
+                      SaveFace(this.e1, this.data, this.jsonFile)),
+            ).then((value) => setState(() {
+                  _initializeCamera();
+                }));
+          }
+        },
+        onDoubleTap: _toggleCameraDirection,
+      ),
       floatingActionButton: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.end,
@@ -339,12 +360,25 @@ class _FaceRecognitionState extends State<FaceRecognition> {
               backgroundColor: (_faceFound) ? Colors.blue : Colors.blueGrey,
               child: Icon(Icons.add),
               onPressed: () {
-                if (_faceFound) _addLabel();
-                if (!_hasSpeech || speech.isListening)
-                  stopListening();
-                else
-                  startListening();
-                print(lastWords + "Hey");
+                if (_faceFound) {
+                  setState(() {
+                    _camera = null;
+                  });
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            SaveFace(this.e1, this.data, this.jsonFile)),
+                  ).then((value) => setState(() {
+                        _initializeCamera();
+                      }));
+                }
+                //_addLabel();
+                // if (!_hasSpeech || speech.isListening)
+                //   stopListening();
+                // else
+                //   startListening();
+                // print(lastWords + "Hey");
                 //_handle(lastWords.toUpperCase());
                 // _name.clear();
                 //Navigator.pop(context);
