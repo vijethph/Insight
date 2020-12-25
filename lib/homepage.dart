@@ -137,21 +137,25 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.black26,
         title: const Text('Insight'),
       ),
-      body: Center(
-        child: ButtonTheme(
-          buttonColor: Colors.black12,
-          minWidth: MediaQuery.of(context).size.width * 0.5,
-          height: MediaQuery.of(context).size.height * 0.5,
-          child: RaisedButton(
-            onPressed: !_hasSpeech || speech.isListening
-                ? stopListening
-                : startListening,
-            child: Text(
-              "Audio Input",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-              ),
+      body: Container(
+        child: GestureDetector(
+          onTap: !_hasSpeech || speech.isListening
+              ? stopListening
+              : startListening,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.mic,
+                  color: Colors.white,
+                  size: 250,
+                ),
+                Text(
+                  "Tap on screen",
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ],
             ),
           ),
         ),

@@ -134,6 +134,22 @@ class _SaveFaceState extends State<SaveFace> {
           onTap: !_hasSpeech || speech.isListening
               ? stopListening
               : startListening,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.add,
+                  color: Colors.white,
+                  size: 250,
+                ),
+                Text(
+                  "Tap on screen",
+                  style: TextStyle(color: Colors.white, fontSize: 25),
+                ),
+              ],
+            ),
+          ),
         ),
       ),
       backgroundColor: Colors.blueGrey,
