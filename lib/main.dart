@@ -7,7 +7,7 @@ void main() {
       themeMode: ThemeMode.dark,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        brightness: Brightness.dark,
+        brightness: Brightness.light,
       ),
       home: Authentication(),
       title: "Insight",

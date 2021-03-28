@@ -21,19 +21,50 @@ class BndBox extends StatefulWidget {
 }
 
 class _BndBoxState extends State<BndBox> {
-  FlutterTts flutterTts = new FlutterTts();
+  FlutterTts flutterTts;
   TtsState ttsState = TtsState.stopped;
+
+  @override
+  void initState(){
+    super.initState();
+    initTTS();
+  }
+
+  initTTS(){
+    flutterTts =  new FlutterTts();
+    flutterTts.setStartHandler(() {
+      setState(() {
+        print("Playing");
+        ttsState = TtsState.playing;
+      });
+    });
+
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        print("Complete");
+        ttsState = TtsState.stopped;
+      });
+    });
+    flutterTts.setCancelHandler(() {
+      setState(() {
+        print("Cancel");
+        ttsState = TtsState.stopped;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    flutterTts.stop();
+  }
+
 
   void _getVoice(String value, double data) async {
     if (ttsState != TtsState.playing && (data) > 50.0) {
       var result = await flutterTts.speak(value);
       if (result == 1) setState(() => ttsState = TtsState.playing);
     }
-    flutterTts.setCompletionHandler(() {
-      setState(() {
-        ttsState = TtsState.stopped;
-      });
-    });
   }
 
   @override
@@ -45,9 +76,10 @@ class _BndBoxState extends State<BndBox> {
         var _y = re["rect"]["y"];
         var _h = re["rect"]["h"];
         var scaleW, scaleH, x, y, w, h;
-        _getVoice("There is " + re["detectedClass"] + " in front of you",
-            (re["confidenceInClass"] * 100));
-
+        if (this.mounted) {
+          _getVoice("There is " + re["detectedClass"] + " in front of you",
+              (re["confidenceInClass"] * 100));
+        }
         if (widget.screenH / widget.screenW >
             widget.previewH / widget.previewW) {
           scaleW = widget.screenH / widget.previewH * widget.previewW;

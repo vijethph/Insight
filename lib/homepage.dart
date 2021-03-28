@@ -89,11 +89,12 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       lastWords = '${result.recognizedWords}';
     });
-    if (lastWords.compareTo("recognise face") == 0)
+    if (lastWords.compareTo("recognise face") == 0) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => FaceRecognition()),
       );
+    }
     else if (lastWords.compareTo("detect objects") == 0) {
       try {
         cameras = await availableCameras();
@@ -104,6 +105,9 @@ class _HomePageState extends State<HomePage> {
         context,
         MaterialPageRoute(builder: (context) => ObjectDetection(cameras)),
       );
+    }
+    else{
+      tts.speak("Please provide a valid command");
     }
   }
 
@@ -132,17 +136,17 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    tts.speak("Welcome to Insight.Please provide the command.");
-    if (!_hasSpeech) initSpeechState();
     super.initState();
+    tts.speak("Welcome to Insight. Please provide the command.");
+    if (!_hasSpeech) initSpeechState();
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    super.dispose();
     tts.stop();
     if (speech.isListening) stopListening();
-    super.dispose();
   }
 
   @override
@@ -150,7 +154,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: AppBar(
-        backgroundColor: Colors.black26,
+        backgroundColor: Colors.indigo,
         title: const Text('Insight'),
       ),
       body: Container(
@@ -165,7 +169,7 @@ class _HomePageState extends State<HomePage> {
                 RippleAnimation(
                     repeat: true,
                     key: UniqueKey(),
-                    color: Colors.blue,
+                    color: Colors.lightBlue,
                     minRadius: 100,
                     ripplesCount: 6,
                     child: Icon(

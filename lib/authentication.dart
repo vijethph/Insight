@@ -40,15 +40,15 @@ class _AuthenticationState extends State<Authentication> {
 
   @override
   void initState() {
+    super.initState();
     tts.speak("Please authenticate using finger print.");
     _authenticate();
-    super.initState();
   }
 
   @override
   void dispose() {
-    _cancelAuthentication();
     super.dispose();
+    _cancelAuthentication();
   }
 
   @override

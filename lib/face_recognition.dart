@@ -23,7 +23,9 @@ import 'dart:async';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'tts.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+
+enum TtsState { playing, stopped, paused, continued }
 
 class FaceRecognition extends StatefulWidget {
   @override
@@ -32,7 +34,8 @@ class FaceRecognition extends StatefulWidget {
 
 class _FaceRecognitionState extends State<FaceRecognition> {
   //Text to speech
-  TTS tts;
+  FlutterTts flutterTts;
+  TtsState ttsState = TtsState.stopped;
 
   //Face recognition
   File jsonFile;
@@ -96,6 +99,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
 
   void stopListening() {
     speech.stop();
+
     setState(() {
       level = 0.0;
     });
@@ -142,15 +146,47 @@ class _FaceRecognitionState extends State<FaceRecognition> {
 
   @override
   void initState() {
-    tts = new TTS();
-    tts.speak("Command successful.Recognising face");
-    if (!_hasSpeech) initSpeechState();
-
     super.initState();
+    initTTS();
+
+    _getVoice("Command Accepted. Recognizing face");
+    if (!_hasSpeech) initSpeechState();
 
     SystemChrome.setPreferredOrientations(
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     _initializeCamera();
+  }
+
+  initTTS() {
+    flutterTts = new FlutterTts();
+    flutterTts.setStartHandler(() {
+      setState(() {
+        print("Playing");
+        ttsState = TtsState.playing;
+      });
+    });
+
+    flutterTts.setCompletionHandler(() {
+      setState(() {
+        print("Complete");
+        ttsState = TtsState.stopped;
+      });
+    });
+    flutterTts.setCancelHandler(() {
+      setState(() {
+        print("Cancel");
+        ttsState = TtsState.stopped;
+      });
+    });
+  }
+
+  void _getVoice(String value) async {
+    if (value != null && value.isNotEmpty) {
+      if (ttsState != TtsState.playing) {
+        var result = await flutterTts.speak(value);
+        if (result == 1) setState(() => ttsState = TtsState.playing);
+      }
+    }
   }
 
   //Face recognition
@@ -224,7 +260,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
             setState(() {
               _scanResults = finalResult;
             });
-            tts.speak(res);
+            _getVoice(res);
             _isDetecting = false;
           },
         ).catchError(
@@ -303,15 +339,16 @@ class _FaceRecognitionState extends State<FaceRecognition> {
 
   @override
   void dispose() {
-    stopListening();
     super.dispose();
+    flutterTts.stop();
+    if (speech.isListening) stopListening();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.indigo,
         title: const Text('Face recognition'),
         actions: <Widget>[
           PopupMenuButton<Choice>(
@@ -387,10 +424,10 @@ class _FaceRecognitionState extends State<FaceRecognition> {
               heroTag: null,
             ),
             SizedBox(
-              height: 10,
+              width: 10,
             ),
             FloatingActionButton(
-              backgroundColor: Colors.black,
+              backgroundColor: Colors.amber,
               onPressed: _toggleCameraDirection,
               heroTag: null,
               child: _direction == CameraLensDirection.back

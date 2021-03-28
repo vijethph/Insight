@@ -126,7 +126,7 @@ class _SaveFaceState extends State<SaveFace> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: Colors.indigo,
         title: const Text('Add Face'),
       ),
       body: Container(
