@@ -29,6 +29,11 @@ dependencies:
   speech_to_text: ^3.1.0
   tflite: ^1.1.1
   ripple_animation: ^0.0.1+2
+  intl: ^0.16.1
+  receive_sharing_intent: ^1.4.5
+  http: ^0.13.1
+  geolocator: ^6.2.0
+  translator: ^0.1.6+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
@@ -61,6 +66,8 @@ flutter:
     - assets/yolov2_tiny.txt
     - assets/ssd_mobilenet.tflite
     - assets/ssd_mobilenet.txt
+    - assets/language.png
+    - assets/report.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

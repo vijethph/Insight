@@ -1,16 +1,11 @@
 [![Status](https://img.shields.io/badge/status-active-success.svg?style=flat-square&logo=flutter)](https://github.com/vijethph/Insight)
-[![GitHub issues](https://img.shields.io/github/issues/vijethph/Insight?style=flat-square)](https://github.com/vijethph/Insight/issues)
-[![Contributors](https://img.shields.io/github/contributors/vijethph/Insight?style=flat-square)](https://github.com/vijethph/Insight/graphs/contributors)
-[![GitHub forks](https://img.shields.io/github/forks/vijethph/Insight?color=blue&style=flat-square)](https://github.com/vijethph/Insight/network)
-[![GitHub stars](https://img.shields.io/github/stars/vijethph/Insight?color=yellow&style=flat-square)](https://github.com/vijethph/Insight/stargazers)
-[![GitHub license](https://img.shields.io/github/license/vijethph/Insight?style=flat-square)](https://github.com/vijethph/Insight/blob/master/LICENSE)
-[![made-with-flutter](https://img.shields.io/badge/made%20with-flutter-blue.svg?style=for-the-badge&labelColor=03045e&logo=flutter)](https://reactjs.org)
+[![made-with-flutter](https://img.shields.io/badge/made%20with-flutter-blue.svg?style=for-the-badge&labelColor=03045e&logo=flutter)](https://flutter.dev)
 [![forthebadge](https://forthebadge.com/images/badges/built-by-developers.svg)](https://forthebadge.com)
 
 <br />
-<p align="center">
+<div align="center">
   <a href="https://github.com/vijethph/Insight">
-    <img src="assets/eye.png" alt="Logo" width="120" height="120">
+    <img src="assets/eye.png" alt="Logo" width="120" height="120" align="center">
   </a>
 
   <h2 align="center">Insight</h2>
@@ -23,7 +18,7 @@
     ·
     <a href="https://github.com/vijethph/Insight/issues">Request Feature</a>
   </p>
-</p>
+</div>
 
 <!-- TABLE OF CONTENTS -->
 
@@ -44,7 +39,17 @@
 
 ## About The Project
 
-This is a Flutter app that uses [Firebase ML vision](https://firebase.google.com/docs/ml), [Tensorflow Lite](https://www.tensorflow.org/lite), and in-built speech recogntion and text-to-speech capabilities to act like a third eye for blind people. It uses Firebase ML vision to detect human faces, and Tensorflow Lite model implementations of [MobileFaceNets]() and [SSD MobileNetV2](https://arxiv.org/abs/1801.04381) to perform face recognition and object detection respectively. The blind user can authenticate with fingerprint, issue voice commands to perform face recognition and object detection. The app responds appropriately via voice output for every command issued. The blind user can use this app to detect and save human faces, and detect objects in front of him/her.
+|                            Face Recognition                             |                            Object Detection                             |                      OCR with speech output                      |                            Text Summarization                            |                               Google Translate API                               |
+| :---------------------------------------------------------------------: | :---------------------------------------------------------------------: | :--------------------------------------------------------------: | :----------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
+| <img src="images/recognizeface.gif" alt="Recognize Face" height="300"/> | <img src="images/objectdetect.gif" alt="Detect Objects" height="300" /> | <img src="images/ocrdoing.gif" alt="OCR for text" height="300"/> | <img src="images/summarizetext.gif" alt="Summarize Text" height="300" /> | <img src="images/googletranslate.gif" alt="Google Translate API" height="300" /> |
+
+|                                 GPS Location Tracing                                  |
+| :-----------------------------------------------------------------------------------: |
+| <img src="images/locationtracer.png" alt="Trace Location" height="300" width="400" /> |
+
+> Please wait for sometime for the above GIFs to load. Otherwise, click on them to view them individually.
+
+This is a Flutter app that uses [Firebase ML vision](https://firebase.google.com/docs/ml), [Tensorflow Lite](https://www.tensorflow.org/lite), and in-built speech recognition and text-to-speech capabilities to act like a third eye for blind people. It uses Firebase ML vision to detect human faces, and Tensorflow Lite model implementations of [MobileFaceNets](https://arxiv.org/abs/1804.07573) and [SSD MobileNetV2](https://arxiv.org/abs/1801.04381) to perform face recognition and object detection respectively. The blind user can authenticate with fingerprint, issue voice commands to perform face recognition, object detection, OCR, automatic URL and text summarization, translate languages, and send GPS location. The app responds appropriately via voice output for every command issued. The text summarization API is built with Flask, Sumy, Trafilatura and is deployed to Heroku. It uses Latent Semantic Analysis(LSA) algorithm for text summarization. The blind user can use this app to detect and save human faces, detect objects in front of him/her, get voice output of text within objects, summarized result of text and URLs, translate sentences to different languages, and also send his/her GPS location for tracing purposes.
 
 ### Built With
 
@@ -52,6 +57,7 @@ This project is entirely built with the following components and languages:
 
 - [Flutter](https://flutter.dev/)
 - [Firebase ML vision](https://firebase.google.com/docs/ml)
+- [Google Translate API](https://cloud.google.com/translate)
 - [Tensorflow Lite](https://www.tensorflow.org/lite)
 - [MobileFaceNets](https://arxiv.org/abs/1804.07573)
 - [SSD MobileNetV2](https://arxiv.org/abs/1801.04381)
@@ -138,6 +144,8 @@ Sathya M - [@sathya5278](https://github.com/sathya5278)
 Shashank Ashok Gadavi - [@Shashankgadavi](https://github.com/Shashankgadavi)
 
 Sagar V - [@sagubantii1911](https://github.com/sagubantii1911)
+
+Ipsita Sanyal
 
 Project Link: [https://github.com/vijethph/Insight](https://github.com/vijethph/Insight)
 

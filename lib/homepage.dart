@@ -3,7 +3,11 @@ Waits for the user input in the form of audio and navigates
 to specific page based on the given input
  */
 
+import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
+import 'package:Face_recognition/OCR.dart';
+import 'package:Face_recognition/textsummarize.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +15,11 @@ import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
 import 'package:ripple_animation/ripple_animation.dart';
+import 'package:receive_sharing_intent/receive_sharing_intent.dart';
+import 'package:http/http.dart' as http;
+import 'package:geolocator/geolocator.dart';
+
+import 'translation.dart';
 import 'objectdetection.dart';
 import 'tts.dart';
 import 'face_recognition.dart';
@@ -23,6 +32,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Position userLocation;
+
+  StreamSubscription _intentDataStreamSubscription;
+  String _sharedText = "";
+
   TTS tts = new TTS();
 
   bool _hasSpeech = false;
@@ -36,6 +50,17 @@ class _HomePageState extends State<HomePage> {
   int resultListened = 0;
   List<LocaleName> _localeNames = [];
   final SpeechToText speech = SpeechToText();
+
+  Future<Position> _getLocation() async {
+    var currentLocation;
+    try {
+      currentLocation = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.best);
+    } catch (e) {
+      currentLocation = null;
+    }
+    return currentLocation;
+  }
 
   Future<void> initSpeechState() async {
     var hasSpeech = await speech.initialize(
@@ -94,8 +119,7 @@ class _HomePageState extends State<HomePage> {
         context,
         MaterialPageRoute(builder: (context) => FaceRecognition()),
       );
-    }
-    else if (lastWords.compareTo("detect objects") == 0) {
+    } else if (lastWords.compareTo("detect objects") == 0) {
       try {
         cameras = await availableCameras();
       } on CameraException catch (e) {
@@ -105,8 +129,37 @@ class _HomePageState extends State<HomePage> {
         context,
         MaterialPageRoute(builder: (context) => ObjectDetection(cameras)),
       );
-    }
-    else{
+    } else if (lastWords.compareTo("read text") == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => OCR()),
+      );
+    } else if (lastWords.compareTo("send my location") == 0) {
+      Map<String, String> postData = {
+        'latitude': userLocation.latitude.toString(),
+        'longitude': userLocation.longitude.toString()
+      };
+      var url = Uri.parse('https://insightbackend.herokuapp.com/');
+      var response = await http.post(url,
+          body: postData,
+          headers: {
+            "Accept": "*/*",
+            "Content-Type": "application/x-www-form-urlencoded"
+          },
+          encoding: Encoding.getByName("utf-8"));
+      if (response.statusCode == 200) {
+        tts.speak("Your location co-ordinates are sent successfully.");
+      } else {
+        tts.speak("Sorry. Could not send your location.");
+      }
+    } else if (lastWords.startsWith("translate")) {
+      String sentence = lastWords;
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => TranslateText(sentence)),
+      );
+    } else {
       tts.speak("Please provide a valid command");
     }
   }
@@ -139,11 +192,58 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     tts.speak("Welcome to Insight. Please provide the command.");
     if (!_hasSpeech) initSpeechState();
+
+    _getLocation().then((position) {
+      setState(() {
+        userLocation = position;
+        final snackBar1 = SnackBar(
+            content: Text(
+          "Location:" +
+              userLocation.latitude.toString() +
+              " " +
+              userLocation.longitude.toString(),
+          style: TextStyle(color: Colors.amber),
+        ));
+        ScaffoldMessenger.of(context).showSnackBar(snackBar1);
+      });
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is in the memory
+    _intentDataStreamSubscription =
+        ReceiveSharingIntent.getTextStream().listen((String value) {
+      if (value?.isNotEmpty ?? false) {
+        setState(() {
+          _sharedText = value;
+          print("Shared: $_sharedText");
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SummarizeText(_sharedText)),
+        );
+      }
+    }, onError: (err) {
+      print("getLinkStream error: $err");
+    });
+
+    // For sharing or opening urls/text coming from outside the app while the app is closed
+    ReceiveSharingIntent.getInitialText().then((String value) {
+      if (value?.isNotEmpty ?? false) {
+        setState(() {
+          _sharedText = value;
+          print("Shared: $_sharedText");
+        });
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => SummarizeText(_sharedText)),
+        );
+      }
+    });
   }
 
   @override
   void dispose() {
     // TODO: implement dispose
+    _intentDataStreamSubscription.cancel();
     super.dispose();
     tts.stop();
     if (speech.isListening) stopListening();
@@ -167,22 +267,21 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 RippleAnimation(
-                    repeat: true,
-                    key: UniqueKey(),
-                    color: Colors.lightBlue,
-                    minRadius: 100,
-                    ripplesCount: 6,
-                    child: Icon(
-                      Icons.mic,
-                      color: Colors.white,
-                      size: 250,
-                    ),
+                  repeat: true,
+                  key: UniqueKey(),
+                  color: Colors.lightBlue,
+                  minRadius: 100,
+                  ripplesCount: 6,
+                  child: Icon(
+                    Icons.mic,
+                    color: Colors.white,
+                    size: 250,
+                  ),
                 ),
-
                 Text(
                   "Tap on screen",
                   style: TextStyle(color: Colors.white, fontSize: 25),
-                ),
+                )
               ],
             ),
           ),
