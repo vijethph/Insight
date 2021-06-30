@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'dart:io';
 import 'dart:ui';
@@ -34,11 +34,11 @@ class _DetailScreenState extends State<DetailScreen> {
       await _getImageSize(imageFile);
     }
 
-    final FirebaseVisionImage visionImage =
-    FirebaseVisionImage.fromFile(imageFile);
+    final GoogleVisionImage visionImage =
+    GoogleVisionImage.fromFile(imageFile);
 
     final TextRecognizer textRecognizer =
-    FirebaseVision.instance.textRecognizer();
+    GoogleVision.instance.textRecognizer();
 
     final VisionText visionText =
     await textRecognizer.processImage(visionImage);

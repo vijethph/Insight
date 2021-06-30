@@ -1,10 +1,9 @@
-import 'package:Face_recognition/homepage.dart';
+import 'homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
 import 'package:local_auth/local_auth.dart';
 import 'tts.dart';
-import 'homepage.dart';
 
 class Authentication extends StatefulWidget {
   @override
@@ -32,6 +31,8 @@ class _AuthenticationState extends State<Authentication> {
     setState(() {
       _authorized = authenticated ? true : false;
     });
+
+    return authenticated;
   }
 
   void _cancelAuthentication() {

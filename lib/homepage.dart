@@ -6,11 +6,12 @@ to specific page based on the given input
 import 'dart:async';
 import 'dart:convert';
 import 'dart:math';
-import 'package:Face_recognition/OCR.dart';
-import 'package:Face_recognition/textsummarize.dart';
+import 'OCR.dart';
+import 'textsummarize.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:speech_to_text/speech_recognition_error.dart';
 import 'package:speech_to_text/speech_recognition_result.dart';
 import 'package:speech_to_text/speech_to_text.dart';
@@ -18,7 +19,9 @@ import 'package:ripple_animation/ripple_animation.dart';
 import 'package:receive_sharing_intent/receive_sharing_intent.dart';
 import 'package:http/http.dart' as http;
 import 'package:geolocator/geolocator.dart';
+import 'package:agora_rtc_engine/rtc_engine.dart';
 
+import 'VideoCall.dart';
 import 'translation.dart';
 import 'objectdetection.dart';
 import 'tts.dart';
@@ -50,6 +53,8 @@ class _HomePageState extends State<HomePage> {
   int resultListened = 0;
   List<LocaleName> _localeNames = [];
   final SpeechToText speech = SpeechToText();
+
+  ClientRole _role = ClientRole.Broadcaster;
 
   Future<Position> _getLocation() async {
     var currentLocation;
@@ -159,9 +164,31 @@ class _HomePageState extends State<HomePage> {
         context,
         MaterialPageRoute(builder: (context) => TranslateText(sentence)),
       );
+    } else if (lastWords.compareTo("video call") == 0) {
+      var url = Uri.parse('https://insightbackend.herokuapp.com/token');
+      var response = await http.get(url);
+      if (response.statusCode == 200) {
+        String token = response.body;
+        // await for camera and mic permissions before pushing video page
+        await _handleCameraAndMic(Permission.camera);
+        await _handleCameraAndMic(Permission.microphone);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  VideoCall(channelName: "insight", role: _role, token: token)),
+        );
+      } else {
+        tts.speak("Sorry. Could not make a video call.");
+      }
     } else {
       tts.speak("Please provide a valid command");
     }
+  }
+
+  Future<void> _handleCameraAndMic(Permission permission) async {
+    final status = await permission.request();
+    print(status);
   }
 
   void soundLevelListener(double level) {
@@ -272,10 +299,19 @@ class _HomePageState extends State<HomePage> {
                   color: Colors.lightBlue,
                   minRadius: 100,
                   ripplesCount: 6,
-                  child: Icon(
-                    Icons.mic,
-                    color: Colors.white,
-                    size: 250,
+                  child: CircleAvatar(
+                    backgroundColor: Colors.blueAccent[700],
+                    radius: 120,
+                    child: CircleAvatar(
+                      backgroundColor: Colors.indigo[900],
+                      //foregroundColor: Colors.green,
+                      radius: 100,
+                      child: Icon(
+                        Icons.mic,
+                        color: Colors.white,
+                        size: 190,
+                      ),
+                    ),
                   ),
                 ),
                 Text(

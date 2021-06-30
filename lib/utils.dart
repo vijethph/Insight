@@ -3,10 +3,10 @@ import 'dart:math';
 import 'dart:typed_data';
 import 'dart:ui';
 import 'package:camera/camera.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+import 'package:google_ml_vision/google_ml_vision.dart';
 import 'package:image/image.dart' as imglib;
 
-typedef HandleDetection = Future<dynamic> Function(FirebaseVisionImage image);
+typedef HandleDetection = Future<dynamic> Function(GoogleVisionImage image);
 enum Choice { view, delete }
 
 Future<CameraDescription> getCamera(CameraLensDirection dir) async {
@@ -17,17 +17,17 @@ Future<CameraDescription> getCamera(CameraLensDirection dir) async {
   );
 }
 
-FirebaseVisionImageMetadata buildMetaData(
+GoogleVisionImageMetadata buildMetaData(
   CameraImage image,
   ImageRotation rotation,
 ) {
-  return FirebaseVisionImageMetadata(
+  return GoogleVisionImageMetadata(
     rawFormat: image.format.raw,
     size: Size(image.width.toDouble(), image.height.toDouble()),
     rotation: rotation,
     planeData: image.planes.map(
       (Plane plane) {
-        return FirebaseVisionImagePlaneMetadata(
+        return GoogleVisionImagePlaneMetadata(
           bytesPerRow: plane.bytesPerRow,
           height: plane.height,
           width: plane.width,
@@ -43,7 +43,7 @@ Future<dynamic> detect(
   ImageRotation rotation,
 ) async {
   return handleDetection(
-    FirebaseVisionImage.fromBytes(
+    GoogleVisionImage.fromBytes(
       image.planes[0].bytes,
       buildMetaData(image, rotation),
     ),

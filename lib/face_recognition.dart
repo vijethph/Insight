@@ -8,10 +8,12 @@ Double tap for changing the camera
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
-import 'package:Face_recognition/save_face.dart';
+import 'package:google_ml_vision/google_ml_vision.dart';
+
+import 'save_face.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:camera/camera.dart';
-import 'package:firebase_ml_vision/firebase_ml_vision.dart';
+//import 'package:firebase_ml_vision/firebase_ml_vision.dart';
 import 'package:flutter/material.dart';
 import 'detector_painters.dart';
 import 'utils.dart';
@@ -273,7 +275,7 @@ class _FaceRecognitionState extends State<FaceRecognition> {
   }
 
   HandleDetection _getDetectionMethod() {
-    final faceDetector = FirebaseVision.instance.faceDetector(
+    final faceDetector = GoogleVision.instance.faceDetector(
       FaceDetectorOptions(
         mode: FaceDetectorMode.accurate,
       ),

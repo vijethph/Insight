@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:translator/translator.dart';
 
+
 enum TtsState { playing, stopped }
 
 class TranslateText extends StatefulWidget {
