@@ -27,15 +27,17 @@ dependencies:
   ripple_animation: ^0.0.1+2
   intl: ^0.16.1
   receive_sharing_intent: ^1.4.5
-  http: ^0.13.1
+  http: ^0.12.2
   geolocator: ^6.2.0
-  translator: ^0.1.6+1
+  translator: ^0.1.2
   agora_rtc_engine: ^3.3.1
   permission_handler: ^5.0.1
   cupertino_icons: ^1.0.2
+  flutter_ibm_watson: ^0.0.4
+  audioplayers: ^0.16.2
 
 dev_dependencies:
-  flutter_launcher_icons: "^0.8.0"
+  flutter_launcher_icons: ^0.8.0
   flutter_test:
     sdk: flutter
 

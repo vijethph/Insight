@@ -5,8 +5,10 @@ to specific page based on the given input
 
 import 'dart:async';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
 import 'OCR.dart';
+import 'about_page.dart';
 import 'textsummarize.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/cupertino.dart';
@@ -166,7 +168,13 @@ class _HomePageState extends State<HomePage> {
       );
     } else if (lastWords.compareTo("video call") == 0) {
       var url = Uri.parse('https://insightbackend.herokuapp.com/token');
-      var response = await http.get(url);
+      var response = await http.get(
+        url,
+        headers: {
+          'Authorization':
+              "Token APP_AUTH_TOKEN"  
+          },
+      );
       if (response.statusCode == 200) {
         String token = response.body;
         // await for camera and mic permissions before pushing video page
@@ -283,6 +291,18 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: Colors.indigo,
         title: const Text('Insight'),
+        actions: [
+          IconButton(
+            icon: Icon(
+              Icons.info_outline,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => AboutPage()));
+            },
+          ),
+        ],
       ),
       body: Container(
         child: GestureDetector(
@@ -313,6 +333,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                   ),
+                ),
+                SizedBox(
+                  height: 10.0,
                 ),
                 Text(
                   "Tap on screen",
