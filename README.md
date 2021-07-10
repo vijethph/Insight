@@ -24,15 +24,17 @@
 
 ## Table of Contents
 
-- [About the Project](#about-the-project)
+- [Table of Contents](#table-of-contents)
+- [About The Project](#about-the-project)
   - [Built With](#built-with)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Installation](#installation)
 - [Usage](#usage)
-- [Contributing](#contributing)
+- [Contributing ![contributions welcome](https://github.com/vijethph/Insight/pulls)](#contributing-)
 - [License](#license)
 - [Contact](#contact)
+- [Thank You!](#thank-you)
 - [Acknowledgements](#acknowledgements)
 
 <!-- ABOUT THE PROJECT -->
@@ -43,13 +45,13 @@
 | :---------------------------------------------------------------------: | :---------------------------------------------------------------------: | :--------------------------------------------------------------: | :----------------------------------------------------------------------: | :------------------------------------------------------------------------------: |
 | <img src="images/recognizeface.gif" alt="Recognize Face" height="300"/> | <img src="images/objectdetect.gif" alt="Detect Objects" height="300" /> | <img src="images/ocrdoing.gif" alt="OCR for text" height="300"/> | <img src="images/summarizetext.gif" alt="Summarize Text" height="300" /> | <img src="images/googletranslate.gif" alt="Google Translate API" height="300" /> |
 
-|                                 GPS Location Tracing                                  |
-| :-----------------------------------------------------------------------------------: |
-| <img src="images/locationtracer.png" alt="Trace Location" height="300" width="400" /> |
+|                                 GPS Location Tracing                                  |                                Video Call Backend Server                                |                             Video Call App Client                             |
+| :-----------------------------------------------------------------------------------: | :-------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------: |
+| <img src="images/locationtracer.png" alt="Trace Location" height="300" width="400" /> | <img src="images/videobackend.jpg" alt="Video Call Backend" height="300" width="400" /> | <img src="images/videofrontend.jpg" alt="Video Call Frontend" height="300" /> |
 
 > Please wait for sometime for the above GIFs to load. Otherwise, click on them to view them individually.
 
-This is a Flutter app that uses [Firebase ML vision](https://firebase.google.com/docs/ml), [Tensorflow Lite](https://www.tensorflow.org/lite), and in-built speech recognition and text-to-speech capabilities to act like a third eye for blind people. It uses Firebase ML vision to detect human faces, and Tensorflow Lite model implementations of [MobileFaceNets](https://arxiv.org/abs/1804.07573) and [SSD MobileNetV2](https://arxiv.org/abs/1801.04381) to perform face recognition and object detection respectively. The blind user can authenticate with fingerprint, issue voice commands to perform face recognition, object detection, OCR, automatic URL and text summarization, translate languages, and send GPS location. The app responds appropriately via voice output for every command issued. The text summarization API is built with Flask, Sumy, Trafilatura and is deployed to Heroku. It uses Latent Semantic Analysis(LSA) algorithm for text summarization. The blind user can use this app to detect and save human faces, detect objects in front of him/her, get voice output of text within objects, summarized result of text and URLs, translate sentences to different languages, and also send his/her GPS location for tracing purposes.
+This is a Flutter app that uses [Firebase ML vision](https://firebase.google.com/docs/ml), [Tensorflow Lite](https://www.tensorflow.org/lite), and in-built speech recognition and text-to-speech capabilities to act like a third eye for blind people. It uses Firebase ML vision to detect human faces, and Tensorflow Lite model implementations of [MobileFaceNets](https://arxiv.org/abs/1804.07573) and [SSD MobileNetV2](https://arxiv.org/abs/1801.04381) to perform face recognition and object detection respectively. The blind user can authenticate with fingerprint, issue voice commands to perform face recognition, object detection, OCR, automatic URL and text summarization, translate languages, send GPS location, and perform video calling with volunteer. The app responds appropriately via voice output for every command issued. The text summarization API is built with Flask, Sumy, Trafilatura and is deployed to Heroku. It uses Latent Semantic Analysis(LSA) algorithm for text summarization. The blind user can use this app to detect and save human faces, detect objects in front of him/her, get voice output of text within objects, summarized result of text and URLs, translate sentences to different languages, video call, and also send his/her GPS location for tracing purposes.
 
 ### Built With
 
@@ -113,7 +115,7 @@ flutter run
 
 ## Usage
 
-Once the app starts, authenticate yourself with fingerprint. Then, tap to issue voice commands like `recognize face` and `detect objects` to perform respective functionalities. In face recognition screen, double tap to change camera, and once human face is detected, long tap to save detected face. The name for detected face can be given with voice input by tapping onto screen.
+Once the app starts, authenticate yourself with fingerprint. Then, tap to issue voice commands like `recognize face`, `detect objects`, `read text` and `send my location` to perform respective functionalities. In face recognition screen, double tap to change camera, and once human face is detected, long tap to save detected face. The name for detected face can be given with voice input by tapping onto screen.
 
 <!-- CONTRIBUTING -->
 
@@ -144,8 +146,6 @@ Sathya M - [@sathya5278](https://github.com/sathya5278)
 Shashank Ashok Gadavi - [@Shashankgadavi](https://github.com/Shashankgadavi)
 
 Sagar V - [@sagubantii1911](https://github.com/sagubantii1911)
-
-Ipsita Sanyal
 
 Project Link: [https://github.com/vijethph/Insight](https://github.com/vijethph/Insight)
 
